@@ -5,7 +5,8 @@ description = The AkBKukU Discord Bot.
 
 [database]
 server = localhost
-port = 5432
-databse = AkBKuku_Discord_bot
-username = root
+port = 5433
+database = akbkuku_discord_bot
+database_schema = production
+username = postgres
 password = password
