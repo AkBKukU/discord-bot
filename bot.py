@@ -128,21 +128,6 @@ async def on_command_error(ctx, error):
         return await ctx.send(f"{ctx.author.mention}: You gave incomplete "
                               f"arguments. {help_text}")
 
-
-@bot.event
-async def on_guild_join(guild):
-    bot.log.info(f"Joined guild \"{guild.name}\" ({guild.id}).")
-    await guild.owner.send(f"Hello and welcome to {script_name}!\n"
-                           "If you don't know why you're getting this message"
-                           f", it's because someone added {script_name} to your"
-                           " server\nDue to Discord API ToS, I am required to "
-                           "inform you that **I log command usages and "
-                           "errors**.\n**I don't log *anything* else**."
-                           "\n\nIf you do not agree to be logged, stop"
-                           f" using {script_name} and remove it from your "
-                           "server as soon as possible.")
-
-
 @bot.event
 async def on_message(message):
     if message.author.bot:
