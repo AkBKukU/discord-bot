@@ -1,0 +1,11 @@
+[base]
+prefix = ak!
+token = token_goes_here
+description = The AkBKukU Discord Bot.
+
+[database]
+server = localhost
+port = 5432
+databse = AkBKuku_Discord_bot
+username = root
+password = password
