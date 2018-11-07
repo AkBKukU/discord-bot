@@ -11,20 +11,20 @@ class AdminCog:
         self.last_eval_result = None
         self.previous_eval_code = None
 
-    @commands.has_permissions(discord.Permissions.administrator)
+    @commands.has_role("Admin")
     @commands.command(aliases=['echo'], hidden=True)
     async def say(self, ctx, *, the_text: str):
         """Repeats a given text."""
         await ctx.send(the_text)
 
-    @commands.has_permissions(discord.Permissions.administrator)
+    @commands.has_role("Admin")
     @commands.command(name='exit', hidden=True)
     async def _exit(self, ctx):
         """Shuts down the bot, owner only."""
         await ctx.send(":wave: Exiting bot, goodbye!")
         await self.bot.logout()
 
-    @commands.has_permissions(discord.Permissions.administrator)
+    @commands.has_role("Admin")
     @commands.command(hidden=True)
     async def load(self, ctx, ext: str):
         """Loads a cog, owner only."""
@@ -37,14 +37,14 @@ class AdminCog:
         self.bot.log.info(f'Loaded ext {ext}')
         await ctx.send(f':white_check_mark: `{ext}` successfully loaded.')
 
-    @commands.has_permissions(discord.Permissions.administrator)
+    @commands.has_role("Admin")
     @commands.command(hidden=True)
     async def fetchlog(self, ctx):
         """Returns log"""
         await ctx.send(file=discord.File(f"{self.bot.script_name}.log"),
                        content="Here's the current log file:")
 
-    @commands.has_permissions(discord.Permissions.administrator)
+    @commands.has_role("Admin")
     @commands.command(name='eval', hidden=True)
     async def _eval(self, ctx, *, code: str):
         """Evaluates some code (Owner only)"""
@@ -97,7 +97,7 @@ class AdminCog:
             for msg in sliced_message:
                 await ctx.send(msg)
 
-    @commands.has_permissions(discord.Permissions.administrator)
+    @commands.has_role("Admin")
     @commands.command(hidden=True)
     async def pull(self, ctx, auto=False):
         """Does a git pull (Owner only)."""
@@ -118,7 +118,7 @@ class AdminCog:
                                    '```\n{traceback.format_exc()}\n```')
                     return
 
-    @commands.has_permissions(discord.Permissions.administrator)
+    @commands.has_role("Admin")
     @commands.command(hidden=True)
     async def sh(self, ctx, *, command: str):
         """Runs a command on shell."""
@@ -138,7 +138,7 @@ class AdminCog:
         for msg in sliced_message:
             await ctx.send(msg)
 
-    @commands.has_permissions(discord.Permissions.administrator)
+    @commands.has_role("Admin")
     @commands.command(hidden=True)
     async def unload(self, ctx, ext: str):
         """Unloads a cog, owner only."""
@@ -146,7 +146,7 @@ class AdminCog:
         self.bot.log.info(f'Unloaded ext {ext}')
         await ctx.send(f':white_check_mark: `{ext}` successfully unloaded.')
 
-    @commands.has_permissions(discord.Permissions.administrator)
+    @commands.has_role("Admin")
     @commands.command(hidden=True)
     async def reload(self, ctx, ext="_"):
         """Reloads a cog, owner only."""
