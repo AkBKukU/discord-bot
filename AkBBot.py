@@ -132,7 +132,7 @@ async def on_command_error(ctx, error):
 
 @bot.event
 async def on_message(message):
-    if message.guild.id != config['base']['guild']:
+    if message.guild.id != int(config['base']['guild']):
         return
 
     if message.author.bot:
