@@ -12,6 +12,13 @@ class Basic:
         """Says hello. Duh."""
         await ctx.send(f"Hello {ctx.author.mention}!")
 
+    @commands.command()
+    async def source(self, ctx):
+        """Gives link to source code."""
+        await ctx.send("You can find my source at " +
+                       self.bot.config['base']['guild'] +
+                       ". Serious PRs and issues welcome!")
+
     @commands.command(aliases=['p'])
     async def ping(self, ctx):
         """Shows ping values to discord.

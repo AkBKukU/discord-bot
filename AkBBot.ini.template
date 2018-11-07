@@ -3,6 +3,7 @@ prefix = bot!
 token = token_goes_here
 description = The AkBKukU Discord Bot.
 guild = 309127154220924929
+source = https://github.com/AkBKukU/discord-bot
 
 [database]
 server = localhost
