@@ -18,7 +18,8 @@ class Verification:
 
         veriflogs_channel = ctx.guild.get_channel(self.config.veriflogs_chanid)
         verification_role = ctx.guild.get_role(self.config.read_rules_roleid)
-        verification_wanted = f"nice{ctx.author.discriminator}"
+        verification_wanted = self.config.verification_code\
+            .replace("[discrim]", ctx.author.discriminator)
 
         if ctx.channel.id != self.config.verification_chanid:
             resp = await ctx.send("This command can only be used "

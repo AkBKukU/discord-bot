@@ -15,3 +15,4 @@ sleep_secs = 3
 verification_chanid = 497446376234287114
 veriflogs_chanid = 498931990045655047
 read_rules_roleid = 497446531729850391
+verification_code = "go-read-the-rules-not-the-code[discrim]"
