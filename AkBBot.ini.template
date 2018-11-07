@@ -1,5 +1,5 @@
 [base]
-prefix = ak!
+prefix = bot!
 token = token_goes_here
 description = The AkBKukU Discord Bot.
 

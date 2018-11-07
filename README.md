@@ -12,7 +12,7 @@ Pull requests are open so if you find a bug or have an idea for a new feature, f
 
 > Requires more manual intervention.
 
-- Install PostgreSQL & create the akbkuku_discord_bot + scehma (ours are called staging & production)
+- Install PostgreSQL & create the akbkuku_discord_bot + schema (ours are called staging & production)
 - Create the tables based on the layout in TABLES.md
 - Use `pip install -r requirements.txt` to install the required modules.
 - Copy bot.ini.template to bot.ini and populate the options
