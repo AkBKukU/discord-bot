@@ -94,7 +94,7 @@ async def on_error(event_method, *args, **kwargs):
 @bot.event
 async def on_command_error(ctx, error):
     log.error(f"Error with \"{ctx.message.content}\" from "
-              f"\"{ctx.message.author}\ ({ctx.message.author.id}) "
+              f"\"{ctx.message.author} ({ctx.message.author.id}) "
               f"of type {type(error)}: {error}")
 
     if isinstance(error, commands.NoPrivateMessage):
@@ -129,8 +129,12 @@ async def on_command_error(ctx, error):
         return await ctx.send(f"{ctx.author.mention}: You gave incomplete "
                               f"arguments. {help_text}")
 
+
 @bot.event
 async def on_message(message):
+    if message.guild.id != config['base']['guild']:
+        return
+
     if message.author.bot:
         return
 

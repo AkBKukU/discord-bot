@@ -5,7 +5,7 @@ import inspect
 import re
 
 
-class AdminCog:
+class Admin:
     def __init__(self, bot):
         self.bot = bot
         self.last_eval_result = None
@@ -14,20 +14,20 @@ class AdminCog:
     @commands.has_role("Admin")
     @commands.command(aliases=['echo'])
     async def say(self, ctx, *, the_text: str):
-        """Repeats a given text."""
+        """Repeats a given text, admin only."""
         await ctx.send(the_text)
 
     @commands.has_role("Admin")
     @commands.command(name='exit')
     async def _exit(self, ctx):
-        """Shuts down the bot, owner only."""
+        """Shuts down the bot, admin only."""
         await ctx.send(":wave: Exiting bot, goodbye!")
         await self.bot.logout()
 
     @commands.has_role("Admin")
     @commands.command()
     async def load(self, ctx, ext: str):
-        """Loads a cog, owner only."""
+        """Loads a cog, admin only."""
         try:
             self.bot.load_extension("cogs." + ext)
         except:
@@ -40,14 +40,14 @@ class AdminCog:
     @commands.has_role("Admin")
     @commands.command()
     async def fetchlog(self, ctx):
-        """Returns log"""
+        """Returns log, admin only."""
         await ctx.send(file=discord.File(f"{self.bot.script_name}.log"),
                        content="Here's the current log file:")
 
     @commands.has_role("Admin")
     @commands.command(name='eval')
     async def _eval(self, ctx, *, code: str):
-        """Evaluates some code (Owner only)"""
+        """Evaluates some code, admin only."""
         try:
             code = code.strip('` ')
 
@@ -100,7 +100,7 @@ class AdminCog:
     @commands.has_role("Admin")
     @commands.command()
     async def pull(self, ctx, auto=False):
-        """Does a git pull (Owner only)."""
+        """Does a git pull, admin only."""
         tmp = await ctx.send('Pulling...')
         git_output = await self.bot.async_call_shell("git pull")
         await tmp.edit(content=f"Pull complete. Output: ```{git_output}```")
@@ -121,7 +121,7 @@ class AdminCog:
     @commands.has_role("Admin")
     @commands.command()
     async def sh(self, ctx, *, command: str):
-        """Runs a command on shell."""
+        """Runs a command on shell, admin only."""
         command = command.strip('`')
         tmp = await ctx.send(f'Running `{command}`...')
         self.bot.log.info(f"Running {command}")
@@ -141,7 +141,7 @@ class AdminCog:
     @commands.has_role("Admin")
     @commands.command()
     async def unload(self, ctx, ext: str):
-        """Unloads a cog, owner only."""
+        """Unloads a cog, admin only."""
         self.bot.unload_extension("cogs." + ext)
         self.bot.log.info(f'Unloaded ext {ext}')
         await ctx.send(f':white_check_mark: `{ext}` successfully unloaded.')
@@ -149,7 +149,7 @@ class AdminCog:
     @commands.has_role("Admin")
     @commands.command()
     async def reload(self, ctx, ext="_"):
-        """Reloads a cog, owner only."""
+        """Reloads a cog, admin only."""
         if ext == "_":
             ext = self.lastreload
         else:
@@ -167,4 +167,4 @@ class AdminCog:
 
 
 def setup(bot):
-    bot.add_cog(AdminCog(bot))
+    bot.add_cog(Admin(bot))
