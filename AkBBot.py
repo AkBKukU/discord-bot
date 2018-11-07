@@ -133,7 +133,8 @@ async def on_message(message):
 
     # bad code bad code bad code
     if (ctx.channel.id in config.clean_channels) and \
-       (ctx.command.name not in config.allowed_clean_commands) and not \
+       (not ctx.command or (ctx.command.name not in
+                            config.allowed_clean_commands)) and not \
        (any(role.id in config.staff_role_ids for role in ctx.author.roles)):
         return await ctx.message.delete()
 
