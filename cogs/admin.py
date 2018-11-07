@@ -3,6 +3,7 @@ from discord.ext import commands
 import traceback
 import inspect
 import re
+import config
 
 
 class Admin:
@@ -11,20 +12,23 @@ class Admin:
         self.last_eval_result = None
         self.previous_eval_code = None
 
-    @commands.has_role("Admin")
+    def check_if_staff(ctx):
+        return any(r.id in config.staff_role_ids for r in ctx.author.roles)
+
+    @commands.check(check_if_staff)
     @commands.command(aliases=['echo'])
     async def say(self, ctx, *, the_text: str):
         """Repeats a given text, admin only."""
         await ctx.send(the_text)
 
-    @commands.has_role("Admin")
+    @commands.check(check_if_staff)
     @commands.command(name='exit')
     async def _exit(self, ctx):
         """Shuts down the bot, admin only."""
         await ctx.send(":wave: Exiting bot, goodbye!")
         await self.bot.logout()
 
-    @commands.has_role("Admin")
+    @commands.check(check_if_staff)
     @commands.command()
     async def load(self, ctx, ext: str):
         """Loads a cog, admin only."""
@@ -37,14 +41,14 @@ class Admin:
         self.bot.log.info(f'Loaded ext {ext}')
         await ctx.send(f':white_check_mark: `{ext}` successfully loaded.')
 
-    @commands.has_role("Admin")
+    @commands.check(check_if_staff)
     @commands.command()
     async def fetchlog(self, ctx):
         """Returns log, admin only."""
         await ctx.send(file=discord.File(f"{self.bot.script_name}.log"),
                        content="Here's the current log file:")
 
-    @commands.has_role("Admin")
+    @commands.check(check_if_staff)
     @commands.command(name='eval')
     async def _eval(self, ctx, *, code: str):
         """Evaluates some code, admin only."""
@@ -97,7 +101,7 @@ class Admin:
             for msg in sliced_message:
                 await ctx.send(msg)
 
-    @commands.has_role("Admin")
+    @commands.check(check_if_staff)
     @commands.command()
     async def pull(self, ctx, auto=False):
         """Does a git pull, admin only."""
@@ -118,7 +122,7 @@ class Admin:
                                    '```\n{traceback.format_exc()}\n```')
                     return
 
-    @commands.has_role("Admin")
+    @commands.check(check_if_staff)
     @commands.command()
     async def sh(self, ctx, *, command: str):
         """Runs a command on shell, admin only."""
@@ -138,7 +142,7 @@ class Admin:
         for msg in sliced_message:
             await ctx.send(msg)
 
-    @commands.has_role("Admin")
+    @commands.check(check_if_staff)
     @commands.command()
     async def unload(self, ctx, ext: str):
         """Unloads a cog, admin only."""
@@ -146,7 +150,7 @@ class Admin:
         self.bot.log.info(f'Unloaded ext {ext}')
         await ctx.send(f':white_check_mark: `{ext}` successfully unloaded.')
 
-    @commands.has_role("Admin")
+    @commands.check(check_if_staff)
     @commands.command()
     async def reload(self, ctx, ext="_"):
         """Reloads a cog, admin only."""

@@ -5,7 +5,6 @@ import config
 class Moderation:
     def __init__(self, bot):
         self.bot = bot
-        self.config = bot.config
 
     def check_if_staff(ctx):
         return any(r.id in config.staff_role_ids for r in ctx.author.roles)
