@@ -11,6 +11,24 @@ source_url = "https://github.com/AkBKukU/discord-bot"
 # Used by verification
 sleep_secs = 3
 
+# Messages by non-staff get automatically deleted in clean channels
+clean_channels = [
+    497446376234287114,  # #verification
+]
+
+# You may allow certain commands to get through on clean channels
+# by specifying them ere
+allowed_clean_commands = [
+    'verify',
+]
+
+# List of staff is used to bypass channel cleaning and admin commands
+staff_role_ids = [
+    309133939748896768,  # Admin
+    309132929857093632,  # Mods
+    309135179832623104,  # AkBKukU
+]
+
 # Verification config
 verification_chanid = 497446376234287114
 veriflogs_chanid = 498931990045655047

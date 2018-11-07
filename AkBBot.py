@@ -129,13 +129,19 @@ async def on_command_error(ctx, error):
 
 @bot.event
 async def on_message(message):
+    ctx = await bot.get_context(message)
+
+    # bad code bad code bad code
+    if (ctx.channel.id in config.clean_channels) and \
+       (ctx.command.name not in config.allowed_clean_commands) and not \
+       (any(role.id in config.staff_role_ids for role in ctx.author.roles)):
+        return await ctx.message.delete()
+
     if message.guild.id not in config.guild_whitelist:
         return
 
     if message.author.bot:
         return
-
-    ctx = await bot.get_context(message)
     await bot.invoke(ctx)
 
 bot.run(config.token, bot=True, reconnect=True)
