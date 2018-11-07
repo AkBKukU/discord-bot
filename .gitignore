@@ -85,4 +85,4 @@ priv-*
 !.vscode/extensions.json
 /.vscode/settings.json
 # Bot configurations
-bot.ini
+config.py
