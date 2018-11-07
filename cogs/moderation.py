@@ -15,7 +15,7 @@ class Moderation:
     async def purge(self, ctx, *, count: int):
         """Purges a number of messages, staff only."""
         count = 100 if count > 100 else count
-        ctx.channel.purge(count)
+        ctx.channel.purge(limit=count)
 
 
 def setup(bot):
