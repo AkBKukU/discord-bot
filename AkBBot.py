@@ -138,10 +138,4 @@ async def on_message(message):
     ctx = await bot.get_context(message)
     await bot.invoke(ctx)
 
-if not Path(f"{script_name}.ini").is_file():
-    log.warning(
-        f"No config file ({script_name}.ini) found, "
-        f"please create one from {script_name}.ini.example file.")
-    exit(3)
-
 bot.run(config.token, bot=True, reconnect=True)
