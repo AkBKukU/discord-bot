@@ -1,4 +1,5 @@
 import time
+import config
 
 from discord.ext import commands
 
@@ -16,7 +17,7 @@ class Basic:
     async def source(self, ctx):
         """Gives link to source code."""
         await ctx.send("You can find my source at " +
-                       self.bot.config.source_url +
+                       config.source_url +
                        ". Serious PRs and issues welcome!")
 
     @commands.command(aliases=['p'])
