@@ -1,0 +1,17 @@
+# Basic bot config
+prefix = "bot!"
+token = "token_goes_here"
+bot_description = "The AkBKukU Discord Bot."
+guild_whitelist = [
+    309127154220924929  # AkBKuku discord
+]
+source_url = "https://github.com/AkBKukU/discord-bot"
+
+# Amount of sleep before deleting our messages that need to be removed
+# Used by verification
+sleep_secs = 3
+
+# Verification config
+verification_chanid = 497446376234287114
+veriflogs_chanid = 498931990045655047
+read_rules_roleid = 497446531729850391

@@ -16,7 +16,7 @@ class Basic:
     async def source(self, ctx):
         """Gives link to source code."""
         await ctx.send("You can find my source at " +
-                       self.bot.config['base']['source'] +
+                       self.bot.config.source_url +
                        ". Serious PRs and issues welcome!")
 
     @commands.command(aliases=['p'])

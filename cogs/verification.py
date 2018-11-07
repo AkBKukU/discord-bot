@@ -5,6 +5,7 @@ import asyncio
 class Verification:
     def __init__(self, bot):
         self.bot = bot
+        self.config = bot.config
 
     @commands.guild_only()
     @commands.command()
@@ -15,41 +16,35 @@ class Verification:
 
         await ctx.message.delete()
 
-        # TODO: pull from config
-        sleep_secs = 3
-        verification_channelid = 497446376234287114
-        ver_logs_channelid = 498931990045655047
-        verification_roleid = 497446531729850391
-
-        ver_logs_channel = ctx.guild.get_channel(ver_logs_channelid)
-        verification_role = ctx.guild.get_role(verification_roleid)
+        veriflogs_channel = ctx.guild.get_channel(self.config.veriflogs_chanid)
+        verification_role = ctx.guild.get_role(self.config.read_rules_roleid)
         verification_wanted = f"nice{ctx.author.discriminator}"
 
-        if ctx.channel.id != verification_channelid:
-            resp = await ctx.send("This command can only be used " +
-                                  f"on <#{verification_channelid}>.")
-            await asyncio.sleep(sleep_secs)
+        if ctx.channel.id != self.config.verification_chanid:
+            resp = await ctx.send("This command can only be used "
+                                  f"on <#{self.config.verification_chanid}>.")
+            await asyncio.sleep(self.config.sleep_secs)
             await resp.delete()
             return
 
         if verification_role in ctx.author.roles:
-            resp = await ctx.send("This command can only by those " +
-                                  f"without <@&{verification_roleid}> role.")
-            await asyncio.sleep(sleep_secs)
+            resp = await ctx.send("This command can only by those without "
+                                  f"<@&{self.config.read_rules_roleid}> role.")
+            await asyncio.sleep(self.config.sleep_secs)
             await resp.delete()
             return
 
         if verification_string.lower().strip() == verification_wanted:
             resp = await ctx.send("Success! Welcome to the "
                                   f"club, {str(ctx.author)}.")
-            await asyncio.sleep(sleep_secs)
+            await asyncio.sleep(self.config.sleep_secs)
+            await veriflogs_channel.send(f"{str(ctx.author)} ({ctx.author.id})"
+                                         " successfully got verified.")
             await ctx.author.add_roles(verification_role)
-            await ver_logs_channel.send(f"{str(ctx.author)} ({ctx.author.id})"
-                                        " successfully got verified.")
             await resp.delete()
         else:
             resp = await ctx.send(f"Incorrect password, {str(ctx.author)}.")
-            await asyncio.sleep(sleep_secs)
+            await asyncio.sleep(self.config.sleep_secs)
             await resp.delete()
 
 

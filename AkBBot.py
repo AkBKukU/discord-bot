@@ -3,9 +3,9 @@ import sys
 import logging
 import logging.handlers
 import traceback
-import configparser
 from pathlib import Path
 import aiohttp
+import config
 
 import discord
 from discord.ext import commands
@@ -31,12 +31,9 @@ log.setLevel(logging.INFO)
 log.addHandler(file_handler)
 log.addHandler(stdout_handler)
 
-config = configparser.ConfigParser()
-config.read(f"{script_name}.ini")
-
 
 def get_prefix(bot, message):
-    prefixes = [config['base']['prefix']]
+    prefixes = [config.prefix]
 
     return commands.when_mentioned_or(*prefixes)(bot, message)
 
@@ -47,10 +44,9 @@ initial_extensions = ['cogs.common',
                       'cogs.verification']
 
 bot = commands.Bot(command_prefix=get_prefix,
-                   description=config['base']['description'], pm_help=None)
+                   description=config.bot_description, pm_help=None)
 
 bot.log = log
-bot.config = config
 bot.script_name = script_name
 
 if __name__ == '__main__':
@@ -70,7 +66,7 @@ async def on_ready():
 
     log.info(f'\nLogged in as: {bot.user.name} - '
              f'{bot.user.id}\ndpy version: {discord.__version__}\n')
-    game_name = f"{config['base']['prefix']}help"
+    game_name = f"{config.prefix}help"
     await bot.change_presence(activity=discord.Game(name=game_name))
 
 
@@ -132,7 +128,7 @@ async def on_command_error(ctx, error):
 
 @bot.event
 async def on_message(message):
-    if message.guild.id != int(config['base']['guild']):
+    if message.guild.id not in config.guild_whitelist:
         return
 
     if message.author.bot:
@@ -147,4 +143,4 @@ if not Path(f"{script_name}.ini").is_file():
         f"please create one from {script_name}.ini.example file.")
     exit(3)
 
-bot.run(config['base']['token'], bot=True, reconnect=True)
+bot.run(config.token, bot=True, reconnect=True)
