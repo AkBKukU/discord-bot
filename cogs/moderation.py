@@ -1,5 +1,4 @@
 from discord.ext import commands
-import asyncio
 import config
 
 
@@ -13,7 +12,7 @@ class Moderation:
 
     @commands.check(check_if_staff)
     @commands.command()
-    async def purge(self, ctx, count: int):
+    async def purge(self, ctx, *, count: int):
         """Purges a number of messages, staff only."""
         count = 100 if count > 100 else count
         ctx.channel.purge(count)
