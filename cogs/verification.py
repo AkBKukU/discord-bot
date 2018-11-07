@@ -39,7 +39,7 @@ class Verification:
             await resp.delete()
             return
 
-        if verification_string.lower().trim() == verification_wanted:
+        if verification_string.lower().strip() == verification_wanted:
             resp = await ctx.send("Success! Welcome to the "
                                   f"club, {str(ctx.author)}.")
             await asyncio.sleep(sleep_secs)
