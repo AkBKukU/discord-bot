@@ -8,7 +8,7 @@ class Moderation:
         self.bot = bot
         self.config = bot.config
 
-    def check_if_staff(self, ctx):
+    def check_if_staff(ctx):
         return any(r.id in config.staff_role_ids for r in ctx.author.roles)
 
     @commands.check(check_if_staff)
