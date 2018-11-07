@@ -48,6 +48,7 @@ bot = commands.Bot(command_prefix=get_prefix,
 
 bot.log = log
 bot.script_name = script_name
+bot.config = config
 
 if __name__ == '__main__':
     for extension in initial_extensions:
