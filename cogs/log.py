@@ -47,7 +47,7 @@ class Log:
     async def get_message(self, userid, log_name,
                           log_channel, digdepth):
         # Check if the message is present on the cache (if there is one)
-        msg_cache = self.get_cache_entry(log_name, userid)
+        msg_cache = await self.get_cache_entry(log_name, userid)
         if msg_cache:
             self.bot.log.info(f"{userid} found in cache"
                               f" as {msg_cache}")
