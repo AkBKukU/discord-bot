@@ -35,13 +35,11 @@ class Verification:
             return await resp.delete()
 
         # Log verification attempt
-        self.bot.log.info(self.verif_log_cache)
         await self.bot.update_logs("Verification Attempt",
                                    ctx.author.id,
                                    veriflogs_channel,
                                    log_text=verification_string,
                                    digdepth=50, result=-1)
-        self.bot.log.info(self.verif_log_cache)
 
         # Check verification code
         if verification_string.lower().strip() == verification_wanted:
