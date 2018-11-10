@@ -144,6 +144,10 @@ async def on_message(message):
        (any(role.id in config.staff_role_ids for role in ctx.author.roles)):
         return await ctx.message.delete()
 
+    if ctx.message.content.lower().strip() in config.blocked_words:
+        log.info(f'Deleting {ctx.message.content} from {ctx.author.name}#{ctx.author.discriminator} as it violates the blocked words list.')
+        await ctx.message.delete()        
+
     await bot.invoke(ctx)
 
 bot.run(config.token, bot=True, reconnect=True)
