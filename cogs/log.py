@@ -97,7 +97,7 @@ class Log:
 
     async def get_cache_entry(self, log_name, entry_name):
         # Check if cache contains the entry, if not, return None
-        if log_name not in self.log_caches and entry_name not in\
+        if log_name not in self.log_caches or entry_name not in\
                 self.log_caches[log_name]:
             return None
 
