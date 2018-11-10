@@ -6,6 +6,7 @@ import config
 class Verification:
     def __init__(self, bot):
         self.bot = bot
+        self.verif_log_cache = {}
 
     @commands.guild_only()
     @commands.command()
@@ -21,26 +22,35 @@ class Verification:
         verification_wanted = config.verification_code\
             .replace("[discrim]", ctx.author.discriminator)
 
+        # Do checks on if the user can even attempt to verify
         if ctx.channel.id != config.verification_chanid:
             resp = await ctx.send("This command can only be used "
                                   f"on <#{config.verification_chanid}>.")
             await asyncio.sleep(config.sleep_secs)
-            await resp.delete()
-            return
+            return await resp.delete()
 
         if verification_role in ctx.author.roles:
             resp = await ctx.send("This command can only by those without "
                                   f"<@&{config.read_rules_roleid}> role.")
             await asyncio.sleep(config.sleep_secs)
-            await resp.delete()
-            return
+            return await resp.delete()
 
+        # Log verification attempt
+        await self.bot.update_logs("Verification Attempt",
+                                   veriflogs_channel,
+                                   log_text=verification_string,
+                                   cache_list=self.verif_log_cache,
+                                   digdepth=50, result=-1)
+
+        # Check verification code
         if verification_string.lower().strip() == verification_wanted:
             resp = await ctx.send("Success! Welcome to the "
                                   f"club, {str(ctx.author)}.")
             await asyncio.sleep(config.sleep_secs)
-            await veriflogs_channel.send(f"{str(ctx.author)} ({ctx.author.id})"
-                                         " successfully got verified.")
+            await self.bot.update_logs("Verification Attempt",
+                                       veriflogs_channel,
+                                       cache_list=self.verif_log_cache,
+                                       digdepth=50, result=0)
             await ctx.author.add_roles(verification_role)
             await resp.delete()
         else:

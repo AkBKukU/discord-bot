@@ -22,8 +22,10 @@ allowed_clean_commands = [
     'verify',
 ]
 
-# Blocked words (effects all channels)
-blocked_words = ["oh"]
+# Blocked words (affects all channels)
+blocked_words = [
+    'oh',
+]
 
 # List of staff is used to bypass channel cleaning and admin commands
 staff_role_ids = [

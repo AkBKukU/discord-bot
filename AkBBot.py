@@ -40,6 +40,7 @@ def get_prefix(bot, message):
 
 initial_extensions = ['cogs.common',
                       'cogs.admin',
+                      'cogs.log',
                       'cogs.basic',
                       'cogs.moderation',
                       'cogs.verification']
@@ -128,6 +129,16 @@ async def on_command_error(ctx, error):
 
 
 @bot.event
+async def on_member_remove(member):
+    # Warning: the following line will break horribly if you're putting this
+    # bot on more than one guild.
+    log_channel = member.guild.get_channel(config.veriflogs_chanid)
+    await bot.update_logs("Verification Attempt",
+                          log_channel,
+                          digdepth=50, result="User left guild")
+
+
+@bot.event
 async def on_message(message):
     ctx = await bot.get_context(message)
 
@@ -145,8 +156,10 @@ async def on_message(message):
         return await ctx.message.delete()
 
     if ctx.message.content.lower().strip() in config.blocked_words:
-        log.info(f'Deleting {ctx.message.content} from {ctx.author.name}#{ctx.author.discriminator} as it violates the blocked words list.')
-        await ctx.message.delete()        
+        log.info(f"Deleting {ctx.message.content} from "
+                 f"{str(ctx.author)} ({ctx.author.id}) as it "
+                 "violates the blocked words list.")
+        await ctx.message.delete()
 
     await bot.invoke(ctx)
 
