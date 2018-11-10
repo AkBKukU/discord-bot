@@ -61,6 +61,7 @@ class Log:
 
         # Check if message is present in channel in last $digdepth messages
         async for potential_msg in log_channel.history(limit=digdepth):
+            self.bot.log.info(f"Checking message {potential_msg.id} on history.")
             startwith_msg = f"<@{userid}> ({userid}) - {log_name}"
             if potential_msg.author == self.bot.user and\
                     potential_msg.clean_content.startswith(startwith_msg):
