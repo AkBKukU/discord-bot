@@ -30,7 +30,7 @@ class Log:
                                  log_channel, log_text, result):
         status_text = await self.create_result_text(result)
         msg_text = (f"<@{userid}> ({userid}) - {log_name}\n```"
-                    f"1) ({str(datetime.utcnow())}) {log_text}```\n"
+                    f"1) ({str(datetime.utcnow())}) {log_text}```"
                     f"{status_text}""")
         return await log_channel.send(msg_text)
 
@@ -49,7 +49,7 @@ class Log:
             log_text += f" [result changed to {result}]"
 
         split_msg[1] = (f"{split_msg[1]}\n{current_num}) "
-                        f"({str(datetime.utcnow())}) {log_text}")
+                        f"({str(datetime.utcnow())}) {log_text.strip()}")
 
         msg_text = '```'.join(split_msg)
 
