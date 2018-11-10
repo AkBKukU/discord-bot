@@ -134,6 +134,7 @@ async def on_member_remove(member):
     # bot on more than one guild.
     log_channel = member.guild.get_channel(config.veriflogs_chanid)
     await bot.update_logs("Verification Attempt",
+                          member.id,
                           log_channel,
                           digdepth=50, result="User left guild")
 

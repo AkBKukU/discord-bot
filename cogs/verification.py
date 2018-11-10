@@ -38,6 +38,7 @@ class Verification:
         # Log verification attempt
         await self.bot.update_logs("Verification Attempt",
                                    veriflogs_channel,
+                                   ctx.author.id,
                                    log_text=verification_string,
                                    cache_list=self.verif_log_cache,
                                    digdepth=50, result=-1)
@@ -49,6 +50,7 @@ class Verification:
             await asyncio.sleep(config.sleep_secs)
             await self.bot.update_logs("Verification Attempt",
                                        veriflogs_channel,
+                                       ctx.author.id,
                                        cache_list=self.verif_log_cache,
                                        digdepth=50, result=0)
             await ctx.author.add_roles(verification_role)
