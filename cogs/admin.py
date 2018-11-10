@@ -119,7 +119,7 @@ class Admin:
                                    'successfully reloaded.')
                 except:
                     await ctx.send(f':x: Cog reloading failed, traceback: '
-                                   '```\n{traceback.format_exc()}\n```')
+                                   f'```\n{traceback.format_exc()}\n```')
                     return
 
     @commands.check(check_if_staff)
