@@ -84,7 +84,7 @@ class Log:
             json.dump(self.log_caches, json_file)
         self.bot.log.info(f"Saved cache to {self.cache_filename}.")
 
-    async def load_cache(self):
+    def load_cache(self):
         if not os.path.isfile(self.cache_filename):
             self.bot.log.info(f"{self.cache_filename} not found.")
             return {}
