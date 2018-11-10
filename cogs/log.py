@@ -11,8 +11,8 @@ class Log:
         self.bot.update_logs = self.update_logs
         self.re_lastentry_num = re.compile(r".*([0-9])\).*$")
         self.cache_filename = "log_cache.json"
-        self.cache_file = open(self.cache_filename, 'w')
         self.log_caches = self.load_cache()
+        self.cache_file = open(self.cache_filename, 'w')
 
     async def clean_log_text(self, log_text):
         log_text = log_text.strip().replace("\n", "").replace("\r", "")\
