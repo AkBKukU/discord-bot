@@ -156,7 +156,8 @@ async def on_message(message):
        (any(role.id in config.staff_role_ids for role in ctx.author.roles)):
         return await ctx.message.delete()
 
-    if ctx.message.content.lower().strip() in config.blocked_words:
+    if ctx.message.content.lower().strip() in config.blocked_words and not\
+            any(role.id in config.staff_role_ids for role in ctx.author.roles):
         log.info(f"Deleting {ctx.message.content} from "
                  f"{str(ctx.author)} ({ctx.author.id}) as it "
                  "violates the blocked words list.")
