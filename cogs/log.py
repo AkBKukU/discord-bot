@@ -20,7 +20,7 @@ class Log:
 
     async def create_result_text(self, result):
         if result == -1:
-            return "**Status:** Ongoing"
+            return "**Status:** :arrow_right: Ongoing"
         elif result == 0:
             return "**Status:** :white_check_mark: Success"
         else:
@@ -95,22 +95,38 @@ class Log:
             self.bot.log.info(f"Loaded cache from {self.cache_filename}.")
             return json.load(json_data)
 
-    async def get_cache_entry(self, cache_name, entry_name):
-        self.bot.log.info(f"Get cache: {cache_name}-{entry_name}-resultgoeshere")
-        # TODO: This is a stub. Actually get it working.
-        return None
+    async def get_cache_entry(self, log_name, entry_name):
+        # Check if cache contains the entry, if not, return None
+        if log_name not in self.log_caches and entry_name not in\
+                self.log_caches[log_name]:
+            return None
 
-    async def set_cache_entry(self, cache_name, entry_name, entry_value):
-        self.bot.log.info(f"Set cache: {cache_name}-{entry_name}-{entry_value}")
-        # TODO: This is a stub. Actually get it working.
-        await self.save_cache()
-        return
+        # Get the cached value, log it and return it
+        cache_res = self.log_caches[log_name][entry_name]
+        self.bot.log.info(f"Get cache: {log_name}-{entry_name}-{cache_res}")
+        return cache_res
 
-    async def del_cache_entry(self, cache_name, entry_name):
-        self.bot.log.info(f"Del cache: {cache_name}-{entry_name}")
-        # TODO: This is a stub. Actually get it working.
+    async def set_cache_entry(self, log_name, entry_name, entry_value):
+        self.log_caches[log_name][entry_name]
+        self.bot.log.info(f"Set cache: {log_name}-{entry_name}-{entry_value}")
+        if log_name not in self.log_caches:
+            self.log_caches[log_name] = {}
+
+        self.log_caches[log_name][entry_name] = entry_value
         await self.save_cache()
-        return
+        return True
+
+    async def del_cache_entry(self, log_name, entry_name):
+        # Check if cache contains the entry, if not, return None
+        if log_name not in self.log_caches and entry_name not in\
+                self.log_caches[log_name]:
+            return False
+
+        del self.log_caches[log_name][entry_name]
+
+        self.bot.log.info(f"Del cache: {log_name}-{entry_name}")
+        await self.save_cache()
+        return True
 
     async def update_logs(self, log_name, userid,
                           log_channel, log_text=None,
