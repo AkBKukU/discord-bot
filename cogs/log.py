@@ -26,7 +26,7 @@ class Log:
                                  log_channel, log_text, result):
         status_text = await self.create_result_text(result)
         msg_text = (f"<@{userid}> ({userid}) - {log_name}\n```"
-                    f"1) {str(datetime.utcnow())} {log_text}```\n"
+                    f"1) ({str(datetime.utcnow())}) {log_text}```\n"
                     f"{status_text}""")
         return await log_channel.send(msg_text)
 
@@ -35,7 +35,8 @@ class Log:
 
         lastentry_num = self.re_lastentry_num.findall(split_msg[1])[0]
 
-        split_msg[1] = f"{split_msg[1]}\n{lastentry_num}) {log_text}"
+        split_msg[1] = (f"{split_msg[1]}\n{lastentry_num}) "
+                        f"({str(datetime.utcnow())}) {log_text}")
         split_msg[2] = await self.create_result_text(result)
 
         msg_text = '```'.join(split_msg)
