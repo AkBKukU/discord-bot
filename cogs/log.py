@@ -16,11 +16,11 @@ class Log:
 
     async def create_result_text(self, result):
         if result == -1:
-            return "Ongoing"
+            return "**Status:** Ongoing"
         elif result == 0:
-            return ":white_check_mark: Success"
+            return "**Status:** :white_check_mark: Success"
         else:
-            return f":x: {result}"
+            return f"**Status:** :x: {result}"
 
     async def create_log_message(self, log_name, userid,
                                  log_channel, log_text, result):
