@@ -107,12 +107,12 @@ class Log:
         return cache_res
 
     async def set_cache_entry(self, log_name, entry_name, entry_value):
-        self.log_caches[log_name][entry_name]
-        self.bot.log.info(f"Set cache: {log_name}-{entry_name}-{entry_value}")
         if log_name not in self.log_caches:
             self.log_caches[log_name] = {}
+            self.bot.log.info(f"Created {log_name} in cache")
 
         self.log_caches[log_name][entry_name] = entry_value
+        self.bot.log.info(f"Set cache: {log_name}-{entry_name}-{entry_value}")
         await self.save_cache()
         return True
 
