@@ -45,11 +45,11 @@ class Verification:
         if verification_string.lower().strip() == verification_wanted:
             resp = await ctx.send("Success! Welcome to the "
                                   f"club, {str(ctx.author)}.")
-            await asyncio.sleep(config.sleep_secs)
             await self.bot.update_logs("Verification Attempt",
                                        ctx.author.id,
                                        veriflogs_channel,
                                        digdepth=50, result=0)
+            await asyncio.sleep(config.sleep_secs)
             await ctx.author.add_roles(verification_role)
             await resp.delete()
         else:
