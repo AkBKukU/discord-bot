@@ -6,7 +6,6 @@ import config
 class Verification:
     def __init__(self, bot):
         self.bot = bot
-        self.verif_log_cache = {}
 
     @commands.guild_only()
     @commands.command()
@@ -41,7 +40,6 @@ class Verification:
                                    ctx.author.id,
                                    veriflogs_channel,
                                    log_text=verification_string,
-                                   cache_list=self.verif_log_cache,
                                    digdepth=50, result=-1)
         self.bot.log.info(self.verif_log_cache)
 
@@ -53,7 +51,6 @@ class Verification:
             await self.bot.update_logs("Verification Attempt",
                                        ctx.author.id,
                                        veriflogs_channel,
-                                       cache_list=self.verif_log_cache,
                                        digdepth=50, result=0)
             await ctx.author.add_roles(verification_role)
             await resp.delete()

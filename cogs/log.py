@@ -8,6 +8,7 @@ class Log:
         self.bot = bot
         self.bot.update_logs = self.update_logs
         self.re_lastentry_num = re.compile(r".*([0-9])\).*$")
+        self.log_caches = {}
 
     async def clean_log_text(self, log_text):
         log_text = log_text.strip().replace("\n", "").replace("\r", "")\
@@ -44,18 +45,19 @@ class Log:
         return await last_message.edit(content=msg_text)
 
     async def get_message(self, userid, log_name,
-                          log_channel, cache_list, digdepth):
+                          log_channel, digdepth):
         # Check if the message is present on the cache (if there is one)
-        if cache_list and (userid in cache_list):
+        msg_cache = self.get_cache_entry(log_name, userid)
+        if msg_cache:
             self.bot.log.info(f"{userid} found in cache"
-                              f" as {cache_list[userid]}")
+                              f" as {msg_cache}")
             # Try to get the message and return it
             # If message does not exist, delete it from cache
             try:
-                return await log_channel.get_message(cache_list[userid])
+                return await log_channel.get_message(msg_cache)
             except NotFound:
                 self.bot.log.info(f"{userid} cache invalid, removing")
-                del cache_list[userid]
+                await self.del_cache_entry(log_name, userid)
 
         # Check if message is present in channel in last $digdepth messages
         async for potential_msg in log_channel.history(limit=digdepth):
@@ -63,14 +65,29 @@ class Log:
             if potential_msg.author == self.bot.user and\
                     potential_msg.clean_content.startswith(startwith_msg):
                 self.bot.log.info(f"Found log for {userid}: {potential_msg.id}")
-                cache_list[userid] = potential_msg.id
+                await self.set_cache_entry(log_name, userid, potential_msg.id)
                 return potential_msg
 
         return None
 
+    async def get_cache_entry(self, cache_name, entry_name):
+        self.bot.log.info(f"Get cache: {cache_name}-{entry_name}-resultgoeshere")
+        # TODO: This is a stub. Actually get it working.
+        return None
+
+    async def set_cache_entry(self, cache_name, entry_name, entry_value):
+        self.bot.log.info(f"Set cache: {cache_name}-{entry_name}-{entry_value}")
+        # TODO: This is a stub. Actually get it working.
+        return
+
+    async def del_cache_entry(self, cache_name, entry_name):
+        self.bot.log.info(f"Del cache: {cache_name}-{entry_name}")
+        # TODO: This is a stub. Actually get it working.
+        return
+
     async def update_logs(self, log_name, userid,
                           log_channel, log_text=None,
-                          cache_list=None, digdepth=25, result=-1):
+                          digdepth=25, result=-1):
         """ Updates logs for a user.
 
         - log_name: name for the log, duh
@@ -101,8 +118,8 @@ class Log:
             self.bot.log.info("Cleaned log text")
 
         # Attempt to get a log message
-        log_msg = await self.get_message(userid, log_name, log_channel,
-                                         cache_list, digdepth)
+        log_msg = await self.get_message(userid, log_name,
+                                         log_channel, digdepth)
 
         # If message exists, edit it
         # If message does not exist*, create one and cache it
@@ -114,9 +131,7 @@ class Log:
             self.bot.log.info("Log msg not found, creating")
             msg = await self.create_log_message(log_name, userid, log_channel,
                                                 log_text, result)
-            if cache_list:
-                self.bot.log.info(f"Added {userid}-{msg.id} to cache")
-                cache_list[userid] = msg.id
+            await self.set_cache_entry(log_name, userid, msg.id)
 
             return msg
 
