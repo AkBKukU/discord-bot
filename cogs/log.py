@@ -43,6 +43,8 @@ class Log:
         if not log_text:
             log_text = ""
 
+        log_text += f"\n(result changed to {result})"
+
         split_msg[1] = (f"{split_msg[1]}\n{current_num}) "
                         f"({str(datetime.utcnow())}) {log_text}")
         split_msg[2] = await self.create_result_text(result)
