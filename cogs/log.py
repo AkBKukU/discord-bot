@@ -35,8 +35,9 @@ class Log:
         split_msg = last_message.clean_content.split('```')
 
         lastentry_num = self.re_lastentry_num.findall(split_msg[1])[0]
+        current_num = int(lastentry_num) + 1
 
-        split_msg[1] = (f"{split_msg[1]}\n{lastentry_num + 1}) "
+        split_msg[1] = (f"{split_msg[1]}\n{current_num}) "
                         f"({str(datetime.utcnow())}) {log_text}")
         split_msg[2] = await self.create_result_text(result)
 
