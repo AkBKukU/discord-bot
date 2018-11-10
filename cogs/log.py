@@ -1,6 +1,8 @@
+import os
 from discord import NotFound
 from datetime import datetime
 import re
+import json
 
 
 class Log:
@@ -8,7 +10,8 @@ class Log:
         self.bot = bot
         self.bot.update_logs = self.update_logs
         self.re_lastentry_num = re.compile(r".*([0-9])\).*\).*$")
-        self.log_caches = {}
+        self.cache_filename = "log_cache.json"
+        self.log_caches = self.load_cache()
 
     async def clean_log_text(self, log_text):
         log_text = log_text.strip().replace("\n", "").replace("\r", "")\
@@ -37,9 +40,11 @@ class Log:
         lastentry_num = self.re_lastentry_num.findall(split_msg[1])[0]
         current_num = int(lastentry_num) + 1
 
-        if log_text:
-            split_msg[1] = (f"{split_msg[1]}\n{current_num}) "
-                            f"({str(datetime.utcnow())}) {log_text}")
+        if not log_text:
+            log_text = ""
+
+        split_msg[1] = (f"{split_msg[1]}\n{current_num}) "
+                        f"({str(datetime.utcnow())}) {log_text}")
         split_msg[2] = await self.create_result_text(result)
 
         msg_text = '```'.join(split_msg)
@@ -72,6 +77,20 @@ class Log:
 
         return None
 
+    async def save_cache(self):
+        with open(self.cache_filename, 'w') as json_file:
+            json.dump(self.log_caches, json_file)
+        self.bot.log.info(f"Saved cache to {self.cache_filename}.")
+
+    async def load_cache(self, cache_name, entry_name):
+        if not os.path.isfile(self.cache_filename):
+            self.bot.log.info(f"{self.cache_filename} not found.")
+            return {}
+
+        with open(self.cache_filename) as json_data:
+            self.bot.log.info(f"Loaded cache from {self.cache_filename}.")
+            return json.load(json_data)
+
     async def get_cache_entry(self, cache_name, entry_name):
         self.bot.log.info(f"Get cache: {cache_name}-{entry_name}-resultgoeshere")
         # TODO: This is a stub. Actually get it working.
@@ -80,11 +99,13 @@ class Log:
     async def set_cache_entry(self, cache_name, entry_name, entry_value):
         self.bot.log.info(f"Set cache: {cache_name}-{entry_name}-{entry_value}")
         # TODO: This is a stub. Actually get it working.
+        await self.save_cache()
         return
 
     async def del_cache_entry(self, cache_name, entry_name):
         self.bot.log.info(f"Del cache: {cache_name}-{entry_name}")
         # TODO: This is a stub. Actually get it working.
+        await self.save_cache()
         return
 
     async def update_logs(self, log_name, userid,
