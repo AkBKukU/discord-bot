@@ -47,11 +47,14 @@ class Log:
                           log_channel, cache_list, digdepth):
         # Check if the message is present on the cache (if there is one)
         if cache_list and userid in cache_list:
+            self.bot.log.info(f"{userid} found in cache"
+                              f" as {cache_list[userid]}")
             # Try to get the message and return it
             # If message does not exist, delete it from cache
             try:
                 return await log_channel.get_message(cache_list[userid])
             except NotFound:
+                self.bot.log.info(f"{userid} cache invalid, removing")
                 del cache_list[userid]
 
         # Check if message is present in channel in last $digdepth messages
@@ -59,6 +62,8 @@ class Log:
             startwith_msg = f"<@{userid}> ({userid}) - {log_name}"
             if potential_msg.author == self.bot.user and\
                     potential_msg.clean_content.startswith(startwith_msg):
+                self.bot.log.info(f"Found log for {userid}: {potential_msg.id}")
+                cache_list[userid] = potential_msg.id
                 return potential_msg
 
         return None
@@ -93,6 +98,7 @@ class Log:
         # Clean log text if it is set
         if log_text:
             log_text = await self.clean_log_text(log_text)
+            self.bot.log.info("Cleaned log text")
 
         # Attempt to get a log message
         log_msg = await self.get_message(userid, log_name, log_channel,
@@ -102,11 +108,14 @@ class Log:
         # If message does not exist*, create one and cache it
         # *: a new message will not be created if no log_text is given
         if log_msg:
+            self.bot.log.info("Log msg found, editing")
             return await self.edit_log_message(log_msg, log_text, result)
         elif log_text:
+            self.bot.log.info("Log msg not found, creating")
             msg = await self.create_log_message(log_name, userid, log_channel,
                                                 log_text, result)
             if cache_list:
+                self.bot.log.info(f"Added {userid}-{msg.id} to cache")
                 cache_list[userid] = msg.id
 
             return msg
