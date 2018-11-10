@@ -87,8 +87,10 @@ class Log:
         self.bot.log.info(f"Saved cache to {self.cache_filename}.")
 
     def load_cache(self):
-        if not os.path.isfile(self.cache_filename):
-            self.bot.log.info(f"{self.cache_filename} not found.")
+        # If file is empty, don't attempt to load it
+        if not os.path.isfile(self.cache_filename)\
+                or os.path.getsize(self.cache_filename):
+            self.bot.log.info(f"{self.cache_filename} not found or empty.")
             return {}
 
         with open(self.cache_filename) as json_data:
