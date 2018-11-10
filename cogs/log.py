@@ -12,7 +12,6 @@ class Log:
         self.re_lastentry_num = re.compile(r".*([0-9])\).*$")
         self.cache_filename = "log_cache.json"
         self.log_caches = self.load_cache()
-        self.cache_file = open(self.cache_filename, 'w')
 
     async def clean_log_text(self, log_text):
         log_text = log_text.strip().replace("\n", "").replace("\r", "")\
@@ -83,7 +82,8 @@ class Log:
         return None
 
     async def save_cache(self):
-        json.dump(self.log_caches, self.cache_file)
+        with open(self.cache_filename, 'w') as json_file:
+            json.dump(self.log_caches, json_file)
         self.bot.log.info(f"Saved cache to {self.cache_filename}.")
 
     def load_cache(self):
