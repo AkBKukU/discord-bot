@@ -7,7 +7,7 @@ class Log:
     def __init__(self, bot):
         self.bot = bot
         self.bot.update_logs = self.update_logs
-        self.re_lastentry_num = re.compile(r".*([0-9])\).*$")
+        self.re_lastentry_num = re.compile(r".*([0-9])\).*\).*$")
         self.log_caches = {}
 
     async def clean_log_text(self, log_text):
@@ -32,7 +32,7 @@ class Log:
         return await log_channel.send(msg_text)
 
     async def edit_log_message(self, last_message, log_text, result):
-        split_msg = last_message.clean_content.split('```')
+        split_msg = last_message.content.split('```')
 
         lastentry_num = self.re_lastentry_num.findall(split_msg[1])[0]
         current_num = int(lastentry_num) + 1
