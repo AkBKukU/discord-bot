@@ -57,7 +57,7 @@ class Log:
         async for potential_msg in log_channel.history(limit=digdepth):
             startwith_msg = f"<@{userid}> ({userid}) - {log_name}"
             if potential_msg.author == self.bot.user and\
-                    potential_msg.safe_content.startswith(startwith_msg):
+                    potential_msg.clean_content.startswith(startwith_msg):
                 return potential_msg
 
         return None
