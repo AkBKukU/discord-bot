@@ -1,3 +1,5 @@
+import re
+
 # Basic bot config
 prefix = "bot!"
 token = "token_goes_here"
@@ -22,9 +24,10 @@ allowed_clean_commands = [
     'verify',
 ]
 
-# Blocked words (affects all channels)
-blocked_words = [
-    'oh',
+# Removes messages that match these regexes (affects all channels)
+# Messages will be lowercased and stripped before ran so keep that in mind
+block_regexes = [
+    re.compile(r'^oh$'),  # oh blocking
 ]
 
 # List of staff is used to bypass channel cleaning and admin commands
@@ -37,5 +40,6 @@ staff_role_ids = [
 # Verification config
 verification_chanid = 497446376234287114
 veriflogs_chanid = 498931990045655047
+blockedmsglogs_chanid = 514026768366305280
 read_rules_roleid = 497446531729850391
 verification_code = "go-read-the-rules-not-the-code[discrim]"

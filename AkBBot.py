@@ -149,19 +149,21 @@ async def on_message(message):
     if message.author.bot:
         return
 
-    # bad code bad code bad code
-    if (ctx.channel.id in config.clean_channels) and \
+    bystaff = any(role.id in config.staff_role_ids for role in ctx.author.roles)
+
+    if not bystaff and\
+       (ctx.channel.id in config.clean_channels) and \
        (not ctx.command or (ctx.command.name not in
-                            config.allowed_clean_commands)) and not \
-       (any(role.id in config.staff_role_ids for role in ctx.author.roles)):
+                            config.allowed_clean_commands)):
         return await ctx.message.delete()
 
-    if ctx.message.content.lower().strip() in config.blocked_words and not\
-            any(role.id in config.staff_role_ids for role in ctx.author.roles):
-        log.info(f"Deleting {ctx.message.content} from "
-                 f"{str(ctx.author)} ({ctx.author.id}) as it "
-                 "violates the blocked words list.")
-        await ctx.message.delete()
+    for regex in config.block_regexes:
+        if not bystaff and\
+                regex.findall(ctx.message.content.lower().strip()):
+            log.info(f"Deleting {ctx.message.content} from "
+                     f"{str(ctx.author)} ({ctx.author.id}) as it "
+                     "violates the blocked words list.")
+            return await ctx.message.delete()
 
     await bot.invoke(ctx)
 
