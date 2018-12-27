@@ -142,7 +142,6 @@ async def on_member_remove(member):
 @bot.event
 async def on_message(message):
     ctx = await bot.get_context(message)
-
     if message.guild.id not in config.guild_whitelist:
         return
 
@@ -160,9 +159,19 @@ async def on_message(message):
     for regex in config.block_regexes:
         if not bystaff and\
                 regex.findall(ctx.message.content.lower().strip()):
+
             log.info(f"Deleting {ctx.message.content} from "
                      f"{str(ctx.author)} ({ctx.author.id}) as it "
                      "violates the blocked words list.")
+
+            # Send alert in the blocked messages channel
+            blocked_messages_chan = bot.get_channel\
+                        (config.blockedmsglogs_chanid)
+            
+            await blocked_messages_chan.send(f"Deleting {ctx.message.content}"
+                                f" from {str(ctx.author)} (`{ctx.author.id}`)"
+                                f" as it violates the blocked words list")
+
             return await ctx.message.delete()
 
     await bot.invoke(ctx)
