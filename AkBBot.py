@@ -168,7 +168,7 @@ async def on_message(message):
             blocked_messages_chan = bot.get_channel\
                         (config.blockedmsglogs_chanid)
             
-            await blocked_messages_chan.send(f"Deleting {ctx.message.content}"
+            await blocked_messages_chan.send(f"Deleting `{ctx.message.content}`"
                                 f" from {str(ctx.author)} (`{ctx.author.id}`)"
                                 f" as it violates the blocked words list")
 
