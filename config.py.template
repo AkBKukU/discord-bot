@@ -3,9 +3,9 @@ import re
 # Basic bot config
 prefix = "bot!"
 token = "token_goes_here"
-bot_description = "The AkBKukU Discord Bot."
+bot_description = "The Tech Tangents Discord Bot."
 guild_whitelist = [
-    309127154220924929  # AkBKuku discord
+    309127154220924929  # Tech Tangents discord
 ]
 source_url = "https://github.com/AkBKukU/discord-bot"
 
@@ -15,7 +15,7 @@ sleep_secs = 3
 
 # Messages by non-staff get automatically deleted in clean channels
 clean_channels = [
-    497446376234287114,  # #verification
+    497446376234287114,  # #verification channel
 ]
 
 # You may allow certain commands to get through on clean channels
@@ -42,4 +42,5 @@ verification_chanid = 497446376234287114
 veriflogs_chanid = 498931990045655047
 blockedmsglogs_chanid = 514026768366305280
 read_rules_roleid = 497446531729850391
+# [discrim] will be replaced with the user's Discord discriminator when running.
 verification_code = "go-read-the-rules-not-the-code[discrim]"
