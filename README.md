@@ -30,11 +30,17 @@ Copy this file to `config.py`, and modify the following:
 
 ### Setup - Docker
 
-This is the easiest way to get the bot working, with docker installed enter
+This is the easiest way to get the bot working, if you have compose simply run:
+
+`docker-compose up -d`
+
+The bot will be built & start running in the background.
+
+Without docker-compose, you can run the following commands to build & deploy the bot;
 
 ```
 docker build -t akbk-bot .
-docker run -d --name "akbkuku-discord-bot" -v config.py:/config.py akbk-bot
+docker run -d --name "akbkuku-discord-bot" -v $(pwd)/config.py:/bot/config.py akbk-bot
 ``` 
 
 This will create the Docker image from the repo and then start a new container named
@@ -43,4 +49,12 @@ the config and simply restart the container to reload it)
 
 ### Setup - Manual
 
-> TODO
+If you'd rather install the bot without Docker, you can use the following commands;
+
+```
+pip3 install -r requirements.txt
+python3 AkBBot.py
+```
+
+You'll probably want to find a daemon to use, such as Systemd to ensure the bot
+starts at boot time & recovers from any crashes.
