@@ -1,9 +1,10 @@
 from discord.ext import commands
+from discord.ext.commands import Cog
 import asyncio
 import config
 
 
-class Verification:
+class Verification(Cog):
     def __init__(self, bot):
         self.bot = bot
 

@@ -2,9 +2,9 @@ import asyncio
 import traceback
 import datetime
 import humanize
+from discord.ext.commands import Cog
 
-
-class Common:
+class Common(Cog):
     def __init__(self, bot):
         self.bot = bot
 

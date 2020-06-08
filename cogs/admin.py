@@ -1,12 +1,13 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import Cog
 import traceback
 import inspect
 import re
 import config
 
 
-class Admin:
+class Admin(Cog):
     def __init__(self, bot):
         self.bot = bot
         self.last_eval_result = None

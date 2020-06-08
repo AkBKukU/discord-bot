@@ -1,11 +1,12 @@
 import os
 from discord import NotFound
+from discord.ext.commands import Cog
 from datetime import datetime
 import re
 import json
 
 
-class Log:
+class Log(Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bot.update_logs = self.update_logs
