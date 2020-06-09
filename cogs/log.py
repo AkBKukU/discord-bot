@@ -66,7 +66,7 @@ class Log(Cog):
             # Try to get the message and return it
             # If message does not exist, delete it from cache
             try:
-                return await log_channel.get_message(msg_cache)
+                return await log_channel.fetch_message(msg_cache)
             except NotFound:
                 self.bot.log.info(f"{userid} cache invalid, removing")
                 await self.del_cache_entry(log_name, userid)
