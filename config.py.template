@@ -24,12 +24,6 @@ allowed_clean_commands = [
     'verify',
 ]
 
-# Removes messages that match these regexes (affects all channels)
-# Messages will be lowercased and stripped before ran so keep that in mind
-block_regexes = [
-    re.compile(r'^oh$'),  # oh blocking
-]
-
 # List of staff is used to bypass channel cleaning and admin commands
 staff_role_ids = [
     309133939748896768,  # Admin
